@@ -1,15 +1,15 @@
 // ==UserScript==
-// @name         BambooHR Timesheet Fill Month
+// @name         BambooHR Timesheet Fill Month - IL
 // @namespace    month.timesheet.bamboohr.sconde.net
-// @version      1.3
+// @version      1.3_IL
 // @description  Fill BambooHR Timesheet month with templates
-// @author       Sergio Conde
+// @author       Tal Achituv (forked from Sergio Conde)
 // @match        https://*.bamboohr.com/employees/timesheet/*
 // @grant        GM.getValue
 // @grant        GM.setValue
-// @homepageURL  https://github.com/skgsergio/greasemonkey-scripts/
-// @supportURL   https://github.com/skgsergio/greasemonkey-scripts/issues
-// @updateURL    https://raw.githubusercontent.com/skgsergio/greasemonkey-scripts/master/bamboohr-timesheet-month.user.js
+// @homepageURL  https://github.com/compugician/greasemonkey-scripts/
+// @supportURL   https://github.com/compugician/greasemonkey-scripts/issues
+// @updateURL    https://raw.githubusercontent.com/compugician/greasemonkey-scripts/master/bamboohr-timesheet-month.user.js
 // ==/UserScript==
 
 'use strict';
@@ -20,11 +20,11 @@
    Load BambooHR for the first time with the script and then open this script Storage preferences and edit there.
  */
 const DEFAULT_TEMPLATES = {
-  'default': [{ start: '8:15', end: '13:00' }, { start: '13:30', end: '16:45' }],
-  'Fri': [{ start: '8:15', end: '14:30' }, { start: '15:30', end: '17:15' }]
+  'default': [{ start: '8:00', end: '12:30' }, { start: '13:00', end: '17:30' }],
+//  'Fri': [{ start: '8:15', end: '14:30' }, { start: '15:30', end: '17:15' }],
 };
 
-const DEFAULT_ENTROPY_MINUTES = 10;
+const DEFAULT_ENTROPY_MINUTES = 0;
 
 const CONTAINER_CLASSLIST = 'TimesheetSummary__clockButtonWrapper';
 const BUTTON_CLASSLIST = 'fab-Button fab-Button--small fab-Button--width100';
@@ -65,8 +65,8 @@ const BUTTON_CLASSLIST = 'fab-Button fab-Button--small fab-Button--width100';
     for (const [day, details] of Object.entries(tsd.timesheet.dailyDetails)) {
       let date = new Date(day);
 
-      /* Skip weekend */
-      if ([0, 6].includes(date.getDay())) {
+      /* Skip weekend [Friday-Saturday] */
+      if ([5, 6].includes(date.getDay())) {
         continue;
       }
 
